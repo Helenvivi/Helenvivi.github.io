@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>存储管理~分页系统设计篇 - ココのブログ</title><meta name="Description" content="ココの分页设计"><meta property="og:title" content="存储管理~分页系统设计篇" />
+<meta property="og:description" content="ココの分页设计" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" /><meta property="og:image" content="/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-04T15:58:26+08:00" />
+<meta property="article:modified_time" content="2021-04-04T15:58:26+08:00" /><meta property="og:site_name" content="ココのブログ" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/logo.png"/>
+
+<meta name="twitter:title" content="存储管理~分页系统设计篇"/>
+<meta name="twitter:description" content="ココの分页设计"/>
+<meta name="application-name" content="ココのブログ">
+<meta name="apple-mobile-web-app-title" content="ココのブログ"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" /><link rel="prev" href="/posts/thinking/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" /><link rel="next" href="/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "存储管理~分页系统设计篇",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/posts\/thinking\/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98\/"
+        },"genre": "posts","keywords": "操作系统","wordcount":  4527 ,
+        "url": "\/posts\/thinking\/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98\/","datePublished": "2021-04-04T15:58:26+08:00","dateModified": "2021-04-04T15:58:26+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "ココ"
+            },"description": "ココの分页设计"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ココのブログ"><span id="id-1" class="typeit"></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/" title="主页"> Me </a><a class="menu-item" href="/posts/coding/" title="算法"> Coding </a><a class="menu-item" href="/posts/thinking/" title="思考"> Thinking </a><a class="menu-item" href="/tags/" title="标签"> Label </a><a class="menu-item" href="/categories/" title="分类"> Category </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="ねえ、ここに結果が来る" id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ココのブログ"><span id="id-2" class="typeit"></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="ねえ、ここに結果が来る" id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/" title="主页">Me</a><a class="menu-item" href="/posts/coding/" title="算法">Coding</a><a class="menu-item" href="/posts/thinking/" title="思考">Thinking</a><a class="menu-item" href="/tags/" title="标签">Label</a><a class="menu-item" href="/categories/" title="分类">Category</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">存储管理~分页系统设计篇</h1><h2 class="single-subtitle">分页系统设计篇</h2><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="15816034825" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>ココ</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>操作系统</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-04-04">2021-04-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;4527 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;10 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#分页系统中的设计问题">分页系统中的设计问题</a>
+      <ul>
+        <li><a href="#局部分配策略与全局分配策略">局部分配策略与全局分配策略</a></li>
+        <li><a href="#负载控制">负载控制</a></li>
+        <li><a href="#页面大小">页面大小</a></li>
+        <li><a href="#分离的指令空间和数据空间">分离的指令空间和数据空间</a></li>
+        <li><a href="#共享页面">共享页面</a></li>
+        <li><a href="#共享库">共享库</a></li>
+        <li><a href="#内存映射文件">内存映射文件</a></li>
+        <li><a href="#清除策略">清除策略</a></li>
+        <li><a href="#虚拟内存接口">虚拟内存接口</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="分页系统中的设计问题">分页系统中的设计问题</h2>
+<blockquote>
+<p>怎样在相互竞争的可运行进程之间分配内存</p>
+</blockquote>
+<h3 id="局部分配策略与全局分配策略">局部分配策略与全局分配策略</h3>
+<blockquote>
+<p>三个进程A、B、C构成了可运行进程的集合。假如A发生了缺页中断，页面置换算法在寻找最近最少使用的页面时是只考虑分配给A的6个页面呢？还是考虑所有在内存中的页面？</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%b1%80%e9%83%a8"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%b1%80%e9%83%a8, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%b1%80%e9%83%a8 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%b1%80%e9%83%a8 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/局部"
+        title="局部页面置换与全局页面置换" /></p>
+<p>如果淘汰内存中生存时间值最小的页面，而不管它属于哪个进程，则将选中页面B3，于是将得到图所示的情况。图的算法被称为局部（local）页面置换算法，而图3-23c被称为全局（global）页面置换算法。局部算法可以有效地为每个进程分配固定的内存片段。<strong>全局算法在可运行进程之间动态地分配页框，因此分配给各个进程的页框数是随时间变化的。</strong></p>
+<blockquote>
+<p><strong>全局算法在通常情况下工作得比局部算法好，当工作集的大小随进程运行时间发生变化时这种现象更加明显。</strong></p>
+</blockquote>
+<p>另一种途径是使用一个为进程分配页框的算法。</p>
+<p>其中一种方法是定期确定进程运行的数目并为它们分配相等的份额。例如，在有12416个有效（即未被操作系统使用的）页框和10个进程时，每个进程将获得1241个页框，剩下的6个被放入到一个公用池中，当发生缺页中断时可以使用这些页面。</p>
+<p>这个算法看起来好像很公平，但是给一个10KB的进程和一个300KB的进程分配同样大小的内存块是很不合理的。可以采用按照进程大小的比例来为它们分配相应数目的页面的方法来取代上一种方法，这样300KB的进程将得到10KB进程30倍的份额。比较明智的一个可行的做法是对每个进程都规定一个最小的页框数，这样不论多么小的进程都可以运行。</p>
+<h3 id="负载控制">负载控制</h3>
+<blockquote>
+<p>减少竞争内存的进程数的一个好方法是将一部分进程交换到磁盘，并释放他们所占有的所有页面。</p>
+</blockquote>
+<p>一个进程可以被交换到磁盘，而它的页框可以被其他处于颠簸状态的进程分享。如果颠簸停止，系统就能够这样运行一段时间。如果颠簸没有结束，需要继续将其他进程交换出去，直到颠簸结束。因此，即使是使用分页，交换也是需要的，只是现在交换是用来减少对内存潜在的需求，而不是收回它的页面。</p>
+<p>将进程交换出去以减轻内存需求的压力是借用了<strong>两级调度的思想</strong>，在此过程中一些进程被放到磁盘，此时用一个短期的调度程序来调度剩余的进程。很明显，这两种思路可以被组合起来，将恰好足够的进程交换出去以获取可接受的缺页中断率。</p>
+<blockquote>
+<p>一些进程被周期性地从磁盘调入，而其他一些则被周期性地交换到磁盘。<strong>有点类似于交换技术</strong></p>
+</blockquote>
+<h3 id="页面大小">页面大小</h3>
+<blockquote>
+<p>要确定最佳的页面大小需要在几个互相矛盾的因素之间进行权衡。</p>
+</blockquote>
+<p>从结果看，不存在全局最优。首先，有两个因素可以作为选择小页面的理由。随便选择一个正文段、数据段或堆栈段很可能不会恰好装满整数个页面，平均的情况下，最后一个页面中有一半是空的。多余的空间就被浪费掉了，这种浪费称为<strong>内部碎片（internal fragmentation）。</strong></p>
+<blockquote>
+<p>选择小页面还有一个明显的好处，总的来说，与小页面相比，大页面使更多没有用的程序保留在内存中。</p>
+</blockquote>
+<p><strong>如果页面大小是32KB，那就必须始终给该进程分配32KB内存。如果页面大小是16KB，它就只需要16KB。如果页面大小是4KB或更小，在任何时刻它只需要4KB内存。</strong></p>
+<blockquote>
+<p>在另一方面，页面小意味着程序需要更多的页面，这又意味着需要更大的页表。</p>
+</blockquote>
+<p>一个32KB的程序只需要4个8KB的页面，却需要64个512字节的页面。<strong>内存与磁盘之间的传输一般是一次一页</strong>，<strong>传输中的大部分时间都花在了寻道和旋转延迟上</strong>，所以传输一个小的页面所用的时间和传输一个大的页面基本上是相同的。</p>
+<blockquote>
+<p>在某些机器上，每次CPU从一个进程切换到另一个进程时都必须把新进程的页表装入硬件寄存器中。</p>
+</blockquote>
+<p>页面越小意味着装入页面寄存器花费的时间就会越长，而且页表占用的空间也会随着页面的减小而增大。</p>
+<p>商用计算机使用的页面大小一般在<strong>512字节到64KB之间</strong>，以前的典型值是1KB，而现在更常见的页面大小是4 KB或8KB。随着存储器越来越大，页面也倾向于更大（但不是线性的）。把RAM扩大4倍极少会使页面大小加倍。</p>
+<h3 id="分离的指令空间和数据空间">分离的指令空间和数据空间</h3>
+<blockquote>
+<p>大多数计算机只有一个地址空间，既存放程序也存放数据，如果地址空间足够大，那么一切都好。然而，地址空间通常太小了，这就使得程序员对地址空间的使用出现困难。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/地址空间"
+        title="a)单个地址空间；b)分离的I空间和D空间" /></p>
+<p>为指令（程序正文）和数据设置分离的地址空间，分别称为<strong>I空间</strong>和<strong>D空间</strong>。每个地址空间都从0开始到某个最大值，比较有代表性的是216 -1或者232 -1。<strong>链接器</strong>必须知道何时使用分离的I空间和D空间，因为当使用它们时，数据被重定位到虚拟地址0，而不是在程序之后开始。</p>
+<p>在使用这种设计的计算机中，两种地址空间都可以进行分页，而且互相独立。它们分别有自己的页表，分别完成虚拟页面到物理页框的映射。当硬件进行<strong>取指令操作时，它知道要使用I空间和I空间页表</strong>。类似地，<strong>对数据的访问必须通过D空间页表</strong>。除了这一区别，拥有分离的I空间和D空间不会引入任何复杂的设计，而且它还能使可用的地址空间加倍。</p>
+<h3 id="共享页面">共享页面</h3>
+<blockquote>
+<p>显然，由于避免了在内存中有一个页面的两份副本，共享页面效率更高。</p>
+</blockquote>
+<p>这里存在一个问题，即并不是所有的页面都适合共享。特别地，那些只读的页面（诸如程序文本）可以共享，但是数据页面则不能共享。</p>
+<p><strong>如果系统支持分离的I空间和D空间</strong>，那么通过让两个或者多个进程来共享程序就变得非常简单了，<strong>这些进程使用相同的I空间页表和不同的D空间页表</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%85%b1%e4%ba%ab"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%85%b1%e4%ba%ab, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%85%b1%e4%ba%ab 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%85%b1%e4%ba%ab 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/共享"
+        title="两个进程通过共享程序页表来共享同一个程序" /></p>
+<p>在一个比较典型的使用这种方式来支持共享的实现中，页表与进程表数据结构无关。<strong>一个指向I空间页表，一个指向D空间页表</strong>，当调度程序选择一个进程运行时，它使用这些指针来定位合适的页表，并使用它们来设立MMU。</p>
+<p><strong>在两个或更多进程共享某些代码时，在共享页面上存在一个问题</strong>。假设进程A和进程B同时运行一个编辑器并共享页面。如果调度程序决定从内存中移走A，撤销其所有的页面并用一个其他程序来填充这些空的页框，则会引起B产生大量的缺页中断，才能把这些页面重新调入。</p>
+<p>类似地，当进程A结束时，能够发现这些页面仍然在被使用是非常必要的，这样，这些页面的磁盘空间才不会被随意释放。查找所有的页表，考察一个页面是否共享，其代价通常比较大，所以需要<strong>专门的数据结构记录共享页面</strong>，特别地，如果共享的单元是单个页面（或一批页面），而不是整个页表。</p>
+<h3 id="共享库">共享库</h3>
+<blockquote>
+<p>可以使用其他的粒度取代单个页面来实现共享。一个更加通用的技术是使用共享库（在Windows中称作DLL或动态链接库）。</p>
+</blockquote>
+<p>如果一个程序被启动两次，大多数操作系统会自动<strong>共享所有的代码页面</strong>，而在内存中只保留一份代码页面的副本。代码页面总是只读的，因此这样做不存在任何问题。依赖于不同的操作系统，每个进程都拥有一份数据页面的私有副本，或者这些数据页面被共享并且被标记为只读。<strong>如果任何一个进程对一个数据页面进行修改</strong>，系统就会为此进程复制这个数据页面的一个副本，并且这个副本是此进程私有的，也就是说会执行**“写时复制”**</p>
+<p>静态链接上百个包括这些库的程序会浪费大量的磁盘空间，在装载这些程序时也会浪费大量的内存空间，因为系统不知道它可以共享这些库。这就是引入共享库的原因。当一个程序和共享库（与静态库有些许区别）链接时，链接器没有加载被调用的函数，而是加载了一小段能够在运行时绑定被调用函数的存根例程（stub routine）。依赖于系统和配置信息，共享库或者和程序一起被装载，或者在其所包含函数第一次被调用时被装载。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%ba%93"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%ba%93, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%ba%93 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%ba%93 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/库"
+        title="两个进程使用的共享库" /></p>
+<p>共享库带来了一个必须解决的小问题、这个库被不同的进程定位在不同的地址上，大概是因为程序本身的大小不相同。<strong>注意，库被装载到的物理地址与这个库是否为共享库是没有任何关系的，因为所有的页面都被MMU硬件从虚拟地址映射到了物理地址。</strong></p>
+<p><strong>解决方法是：在编译共享库时，用一个特殊的编译选项告知编译器，不要产生使用绝对地址的指令。</strong></p>
+<blockquote>
+<p>注意的是，当一个共享库被装载和使用时，整个库并不是被一次性地读入内存。而是根据需要，以页面为单位装载的，因此没有被调用到的函数是不会被装载到内存中的。</p>
+</blockquote>
+<h3 id="内存映射文件">内存映射文件</h3>
+<p>共享库实际上是一种更为通用的机制——**内存映射文件（memory-mapped file）**的一个特例。</p>
+<blockquote>
+<p><strong>这种机制的思想是：进程可以通过发起一个系统调用，将一个文件映射到其虚拟地址空间的一部分。</strong></p>
+</blockquote>
+<p>在多数实现中，在映射共享的页面时<strong>不会实际读入页面的内容</strong>，而是在<strong>访问页面时才会被每次一页地读入，磁盘文件则被当作后备存储</strong>。<strong>当进程退出或显式地解除文件映射时，所有被改动的页面会被写回到文件中</strong>。</p>
+<p><strong>内存映射文件提供了一种I/O的可选模型。</strong></p>
+<p>可以把一个文件当作一个内存中的大字符数组来访问，而不用通过读写操作来访问这个文件。在一些情况下，程序员发现这个模型更加便利。</p>
+<blockquote>
+<p>如果两个或两个以上的进程同时映射了同一个文件，它们就可以通过共享内存来通信。</p>
+</blockquote>
+<p>一个进程在共享内存上完成了写操作，此刻当另一个进程在映射到这个文件的虚拟地址空间上执行读操作时，它就可以立刻看到上一个进程写操作的结果。因此，这个机制提供了一个进程之间的高带宽通道，而且这种应用很普遍（甚至扩展到用来映射无名的临时文件）。很显然，如果内存映射文件可用，共享库就可以使用这个机制。</p>
+<h3 id="清除策略">清除策略</h3>
+<blockquote>
+<p>为保证有足够的空闲页框，很多分页系统有一个称为**分页守护进程（paging daemon）**的后台进程，它在大多数时候睡眠，但定期被唤醒以检查内存的状态。</p>
+</blockquote>
+<p>如果空闲页框过少，分页守护进程通过预定的页面置换算法选择页面换出内存。如果这些页面装入内存后被修改过，则将它们写回磁盘。</p>
+<p>在任何情况下，页面中原先的内容都被记录下来。<strong>当需要使用一个已被淘汰的页面时，如果该页框还没有被覆盖，将其从空闲页框缓冲池中移出即可恢复该页面</strong>。保存一定数目的页框供给比使用所有内存并在需要时搜索一个页框有更好的性能。<strong>分页守护进程至少保证了所有的空闲页框是“干净”的，所以空闲页框在被分配时不必再急着写回磁盘</strong>。</p>
+<blockquote>
+<p>一种实现清除策略的方法就是使用一个<strong>双指针时钟</strong>。</p>
+</blockquote>
+<p><strong>前指针由分页守护进程控制</strong>。当它指向一个脏页面时，就把该页面写回磁盘，前指针向前移动。当它指向一个干净页面时，仅仅指针向前移动。<strong>后指针用于页面置换</strong>，就像在标准时钟算法中一样。现在，由于分页守护进程的工作，后指针命中干净页面的概率会增加。</p>
+<h3 id="虚拟内存接口">虚拟内存接口</h3>
+<blockquote>
+<p>允许程序员对内存映射进行控制的一个原因就是为了允许两个或者多个进程共享同一部分内存。</p>
+</blockquote>
+<p>如果可以对内存区域进行命名，那么就有可能实现共享内存。通过让一个进程把一片内存区域的名称通知另一个进程，而使得第二个进程可以把这片区域映射到它的虚拟地址空间中去。通过两个进程（或者更多）共享同一部分页面，高带宽的共享就成为可能——一个进程往共享内存中写内容而另一个从中读出内容。</p>
+<blockquote>
+<p>页面共享也可以用来实现高性能的消息传递系统。</p>
+</blockquote>
+<p>般地，传递消息的时候，数据被从一个地址空间复制到另一个地址空间，开销很大。如果进程可以控制它们的页面映射，就可以这样来发送一条消息：发送进程清除那些包含消息的页面的映射，而接收进程把它们映射进来。这里只需要复制页面的名字，而不需要复制所有数据。</p>
+<blockquote>
+<p>另外一种高级存储管理技术是分布式共享内存（Feeley等人，1995；Li，1986；Li和Hudak，1989；Zekauskas等人，1994）。该方法允许网络上的多个进程共享一个页面集合，这些页面可能（而不是必要的）作为单个的线性共享地址空间。</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-04-04</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" data-title="存储管理~分页系统设计篇" data-hashtags="操作系统"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" data-hashtag="操作系统"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" data-title="存储管理~分页系统设计篇"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" data-title="存储管理~分页系统设计篇"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Instapaper" data-sharer="instapaper" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" data-title="存储管理~分页系统设计篇" data-description="ココの分页设计"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/instapaper.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" data-title="存储管理~分页系统设计篇"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/thinking/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" class="prev" rel="prev" title="储存管理～虚拟内存篇"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>储存管理～虚拟内存篇</a>
+            <a href="/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="next" rel="next" title="储存管理～页面置换算法篇">储存管理～页面置换算法篇<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">良い夢 - coding....</div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="15816034825" target="_blank">ココ也叫CoCo</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/typeit@8.6.0/dist/index.umd.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"data":{"id-1":"ココのブログ - coding","id-2":"ココのブログ - coding"},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"},"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"id-1":["id-1"],"id-2":["id-2"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
