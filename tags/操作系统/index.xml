@@ -13,6 +13,14 @@
     <description><![CDATA[页面置换算法篇 当发生缺页中断时，操作系统必须在内存中选择一个页面将其换出内存，以便为即将调入的页面腾出空间。 如果要换出的页面在内存驻留期间已]]></description>
 </item>
 <item>
+    <title>存储管理~分页和分段篇</title>
+    <link>/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/</link>
+    <pubDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</pubDate>
+    <author>ココ</author>
+    <guid>/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/</guid>
+    <description><![CDATA[有关分页实现的问题 与分页有关的工作 操作系统要在下面的四段时间里做与分页相关的工作：进程创建时，进程执行时，缺页中断时和进程终止时。下面将分别]]></description>
+</item>
+<item>
     <title>存储管理~分页系统设计篇</title>
     <link>/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/</link>
     <pubDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</pubDate>
@@ -75,14 +83,6 @@
     <author>ココ</author>
     <guid>/posts/thinking/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/</guid>
     <description><![CDATA[操作系统结构 这六种设计是，单体系统、层次系统、微内核、客户机-服务器系统、虚拟机和exokernels等 单体系统 需要一个主程序，用来处理服务]]></description>
-</item>
-<item>
-    <title>操作系统概念</title>
-    <link>/posts/thinking/%E7%8E%B0%E4%BB%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/</link>
-    <pubDate>Thu, 04 Mar 2021 15:58:26 &#43;0800</pubDate>
-    <author>ココ</author>
-    <guid>/posts/thinking/%E7%8E%B0%E4%BB%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/</guid>
-    <description><![CDATA[现代操作系统概念 进程 进程本质上是正在执行的一个程序。 与每个进程相关的是进程的地址空间（address space），这是从某个最小值的存储位置]]></description>
 </item>
 </channel>
 </rss>

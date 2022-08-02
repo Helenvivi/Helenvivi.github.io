@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>存储管理~分页和分段篇 - ココのブログ</title><meta name="Description" content="ココの分页和分段"><meta property="og:title" content="存储管理~分页和分段篇" />
+<meta property="og:description" content="ココの分页和分段" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" /><meta property="og:image" content="/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-04T15:58:26+08:00" />
+<meta property="article:modified_time" content="2021-04-04T15:58:26+08:00" /><meta property="og:site_name" content="ココのブログ" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/logo.png"/>
+
+<meta name="twitter:title" content="存储管理~分页和分段篇"/>
+<meta name="twitter:description" content="ココの分页和分段"/>
+<meta name="application-name" content="ココのブログ">
+<meta name="apple-mobile-web-app-title" content="ココのブログ"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" /><link rel="prev" href="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" /><link rel="next" href="/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "存储管理~分页和分段篇",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/posts\/thinking\/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5\/"
+        },"genre": "posts","keywords": "操作系统","wordcount":  5818 ,
+        "url": "\/posts\/thinking\/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5\/","datePublished": "2021-04-04T15:58:26+08:00","dateModified": "2021-04-04T15:58:26+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "ココ"
+            },"description": "ココの分页和分段"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ココのブログ"><span id="id-1" class="typeit"></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/" title="主页"> Me </a><a class="menu-item" href="/posts/coding/" title="算法"> Coding </a><a class="menu-item" href="/posts/thinking/" title="思考"> Thinking </a><a class="menu-item" href="/tags/" title="标签"> Label </a><a class="menu-item" href="/categories/" title="分类"> Category </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="ねえ、ここに結果が来る" id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ココのブログ"><span id="id-2" class="typeit"></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="ねえ、ここに結果が来る" id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/" title="主页">Me</a><a class="menu-item" href="/posts/coding/" title="算法">Coding</a><a class="menu-item" href="/posts/thinking/" title="思考">Thinking</a><a class="menu-item" href="/tags/" title="标签">Label</a><a class="menu-item" href="/categories/" title="分类">Category</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">存储管理~分页和分段篇</h1><h2 class="single-subtitle">分页和分段</h2><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="15816034825" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>ココ</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>操作系统</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-04-04">2021-04-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5818 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;12 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#有关分页实现的问题">有关分页实现的问题</a>
+      <ul>
+        <li><a href="#与分页有关的工作">与分页有关的工作</a></li>
+        <li><a href="#缺页中断处理">缺页中断处理</a></li>
+        <li><a href="#指令备份">指令备份</a></li>
+        <li><a href="#锁定内存中的页面">锁定内存中的页面</a></li>
+        <li><a href="#后备存储">后备存储</a></li>
+        <li><a href="#策略和机制的分离">策略和机制的分离</a></li>
+      </ul>
+    </li>
+    <li><a href="#分段">分段</a>
+      <ul>
+        <li><a href="#纯分段的实现">纯分段的实现</a></li>
+        <li><a href="#分段和分页结合multics">分段和分页结合：MULTICS</a></li>
+      </ul>
+    </li>
+    <li><a href="#小结">小结</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="有关分页实现的问题">有关分页实现的问题</h2>
+<h3 id="与分页有关的工作">与分页有关的工作</h3>
+<blockquote>
+<p>操作系统要在下面的四段时间里做与分页相关的工作：<strong>进程创建时，进程执行时，缺页中断时和进程终止时</strong>。下面将分别对这四个时期进行简短的分析。</p>
+</blockquote>
+<p>当在分页系统中<strong>创建一个新进程时，操作系统要确定程序和数据在初始时有多大，并为它们创建一个页表。操作系统还要在内存中为页表分配空间并对其进行初始化</strong>。<strong>当进程被换出时，页表不需要驻留在内存中，但当进程运行时，它必须在内存中</strong>。另外，操作系统<strong>要在磁盘交换区中分配空间，以便在一个进程换出时在磁盘上有放置此进程的空间</strong>。操作系统还要用<strong>程序正文和数据对交换区进行初始化，这样当新进程发生缺页中断时，可以调入需要的页面</strong>。某些系统直接从磁盘上的可执行文件对程序正文进行分页，以节省磁盘空间和初始化时间。最后，<strong>操作系统必须把有关页表和磁盘交换区的信息存储在进程表中。</strong></p>
+<p><strong>当调度一个进程执行时，必须为新进程重置MMU，刷新TLB，以清除以前的进程遗留的痕迹</strong>。新进程的页表必须成为当前页表，通常可以通过复制该页表或者把一个指向它的指针放进某个硬件寄存器来完成。有时，在进程初始化时可以把进程的部分或者全部页面装入内存中以减少缺页中断的发生，例如，PC（程序计数器）所指的页面肯定是需要的。</p>
+<p>当<strong>缺页中断发生时</strong>，操作系统必须通过<strong>读硬件寄存器来确定是哪个虚拟地址造成了缺页中断</strong>。通过该信息，它要计算需要哪个页面，并在磁盘上对该页面进行定位。它必须<strong>找到合适的页框来存放新页面，必要时还要置换老的页面，然后把所需的页面读入页框</strong>。最后，还要<strong>备份程序计数器，使程序计数器指向引起缺页中断的指令，并重新执行该指令</strong>。</p>
+<p><strong>当进程退出的时候，操作系统必须释放进程的页表、页面和页面在硬盘上所占用的空间</strong>。如果某些页面是与其他进程<strong>共享</strong>的，<strong>当最后一个使用它们的进程终止的时候，才可以释放内存和磁盘上的页面</strong>。</p>
+<h3 id="缺页中断处理">缺页中断处理</h3>
+<blockquote>
+<p>缺页中断发生时的事件顺序如下：</p>
+</blockquote>
+<p>1)硬件<strong>陷入内核，在堆栈中保存程序计数器</strong>。大多数机器将当前指令的各种状态信息保存在特殊的CPU寄存器中。</p>
+<p>2)<strong>启动一个汇编代码例程保存通用寄存器和其他易失的信息，以免被操作系统破坏</strong>。这个例程将操作系统作为一个函数来调用。</p>
+<p>3)<strong>当操作系统发现一个缺页中断时，尝试发现需要哪个虚拟页面</strong>。通常一个<strong>硬件寄存器</strong>包含了这一信息，如果没有的话，操作系统必须检索程序计数器，取出这条指令，用软件分析这条指令，看看它在缺页中断时正在做什么。</p>
+<p>4)<strong>一旦知道了发生缺页中断的虚拟地址，操作系统检查这个地址是否有效，并检查存取与保护是否一致</strong>。如果不一致，向进程发出一个信号或杀掉该进程。如果地址有效且没有保护错误发生，系统则检查是否有空闲页框。如果没有空闲页框，执行页面置换算法寻找一个页面来淘汰。</p>
+<p>5)如果选择的<strong>页框“脏”了，安排该页写回磁盘，并发生一次上下文切换，挂起产生缺页中断的进程，让其他进程运行直至磁盘传输结束</strong>。无论如何，该页框被标记为忙，以免因为其他原因而被其他进程占用。</p>
+<p>6)一旦<strong>页框“干净”后（无论是立刻还是在写回磁盘后），操作系统查找所需页面在磁盘上的地址，通过磁盘操作将其装入</strong>。该页面被装入后，产生缺页中断的进程仍然被挂起，并且如果有其他可运行的用户进程，则选择另一个用户进程运行。</p>
+<p>7)当<strong>磁盘中断发生时，表明该页已经被装入</strong>，页表已经更新可以反映它的位置，页框也被标记为正常状态。</p>
+<p>8)<strong>恢复发生缺页中断指令以前的状态，程序计数器重新指向这条指令</strong>。</p>
+<p>9)<strong>调度引发缺页中断的进程，操作系统返回调用它的汇编语言例程</strong>。</p>
+<p>10)<strong>该例程恢复寄存器和其他状态信息，返回到用户空间继续执行，就好像缺页中断没有发生过一样。</strong></p>
+<h3 id="指令备份">指令备份</h3>
+<blockquote>
+<p>当程序访问不在内存中的页面时，引起缺页中断的指令会半途停止并引发操作系统的陷阱。在操作系统取出所需的页面后，它需要重新启动引起陷阱的指令。但这并不是一件容易实现的事。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%bc%ba%e9%a1%b5"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%bc%ba%e9%a1%b5, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%bc%ba%e9%a1%b5 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%bc%ba%e9%a1%b5 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/缺页"
+        title="引起缺页中断的一条指令" /></p>
+<p>从地址1000处开始的指令进行了3次内存访问：指令字本身和操作数的2个偏移量。从可以产生缺页中断的这3次内存访问来看，程序计数器可能在1000、1002和1004时发生缺页中断，<strong>对操作系统来说要准确地判断指令是从哪儿开始的通常是不可能的。如果发生缺页中断时程序计数器是1002</strong>，<strong>操作系统无法弄清在1002位置的字是与1000的指令有关的内存地址（比如，一个操作数的位置），还是一个指令的操作码。</strong></p>
+<p>这也意味着执行这条指令的副作用是会增量一个或多个寄存器。<strong>使用自动增量模式也可能引起错误</strong>。这依赖于微指令的具体实现，这种增量可能会在内存访问之前完成，此时操作系统必须在重启这条指令前将软件中的寄存器减量。自动增量也可能在内存访问之后完成，此时，它不会在陷入时完成而且不必由操作系统恢复。<strong>自动减量也会出现相同的问题</strong>。自动增量和自动减量是否在相应访存之前完成随着指令和CPU模式的不同而不同。</p>
+<p>CPU的设计者们提供了一种解决方法，就是<strong>通过使用一个隐藏的内部寄存器</strong>。在每条指令执行之前，把程序计数器的内容复制到该寄存器。这些机器可能会有第二个寄存器，用来提供哪些寄存器已经自动增加或者自动减少以及增减的数量等信息。通过这些信息，操作系统可以消除引起缺页中断的指令所造成的所有影响，并使指令可以重新开始执行。</p>
+<h3 id="锁定内存中的页面">锁定内存中的页面</h3>
+<blockquote>
+<p>如果分页算法是全局算法，包含I/O缓冲区的页面会有很小的机会（但不是没有）被选中换出内存。</p>
+</blockquote>
+<p>如果一个I/O设备正处在对该页面进行DMA传输的过程之中，将这个页面移出将会导致部分数据写入它们所属的缓冲区中，而部分数据被写入到最新装入的页面中。一种解决方法是<strong>锁住正在做I/O操作的内存中的页面</strong>以保证它不会被移出内存。锁住一个页面通常称为在内存中钉住（pinning）页面。另一种方法是<strong>在内核缓冲区中完成所有的I/O操作，然后再将数据复制到用户页面。</strong></p>
+<h3 id="后备存储">后备存储</h3>
+<blockquote>
+<p>我们已经知道了如何选择换出内存的页面。但是却没有讨论当页面被换出时会存放在磁盘上的哪个位置。现在我们讨论一下磁盘管理相关的问题。</p>
+</blockquote>
+<p>在磁盘上<strong>分配页面空间</strong>的最简单的算法是在磁盘上<strong>设置特殊的交换分区</strong>，甚至<strong>从文件系统划分一块独立的磁盘（以平衡I/O负载）</strong>。在这个分区里没有普通的文件系统，这样就消除了将文件偏移转换成块地址的开销。取而代之的是，始终使用相应分区的起始块号。</p>
+<p><strong>当系统启动时，该交换分区为空，并在内存中以单独的项给出它的起始和大小</strong>。在最简单的情况下，当第一个进程启动时，留出与这个进程一样大的交换区块，剩余的为总空间减去这个交换分区。<strong>当新进程启动后，它们同样被分配与其核心映像同等大小的交换分区。进程结束后，会释放其磁盘上的交换区。交换分区以空闲块列表的形式组织。</strong></p>
+<blockquote>
+<p>与每个进程对应的是其交换区的磁盘地址，即进程映像所保存的地方。</p>
+</blockquote>
+<p><strong>另一个极端的情况是事先什么也不分配，在页面换出时为其分配磁盘空间，并在换入时回收磁盘空间，这样内存中的进程不必固定于任何交换空间。其缺点是内存中每个页面都要记录相应的磁盘地址</strong>。换言之，<strong>每个进程都必须有一张表，记录每一个页面在磁盘上的位置</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e4%ba%a4%e6%8d%a2%e5%88%86%e5%8c%ba"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e4%ba%a4%e6%8d%a2%e5%88%86%e5%8c%ba, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e4%ba%a4%e6%8d%a2%e5%88%86%e5%8c%ba 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e4%ba%a4%e6%8d%a2%e5%88%86%e5%8c%ba 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/交换分区"
+        title="a)对静态交换区分页；b)动态备份页面" /></p>
+<p>与每个进程对应的是其交换区的磁盘地址，即进程映像所保存的地方。这一信息是记录在进程表里的。<strong>写回一个页面时，计算写回地址的过程很简单：将虚拟地址空间中页面的偏移量加到交换区的开始地址</strong>。但在<strong>进程启动前必须初始化交换区</strong>，一种方法是将整个进程映像复制到交换区，以便随时可将所需内容装入，另一种方法是将整个进程装入内存，并在需要时换出。</p>
+<p>磁盘上的交换区与进程虚拟地址空间（8页面）一样大，每个页面有固定的位置，当它从内存中被淘汰时，便写到相应位置。该地址的计算需要知道进程的分页区域的起始位置，因为页面是按照它们的虚拟页号的顺序连续存储的。内存中的页面通常在磁盘上有镜像副本，但是如果页面装入后被修改过，那么这个副本就可能是过期的了。内存中的深色页面表示不在内存，磁盘上的深色页面（原则上）被内存中的副本所替代，但如果有一个内存页面要被换回磁盘并且该页面在装入内存后没有被修改过，那么将使用磁盘中（深色）的副本。</p>
+<p>页面在磁盘上没有固定地址。当页面换出时，要及时选择一个空磁盘页面并据此来更新磁盘映射（每个虚拟页面都有一个磁盘地址空间）。内存中的页面在磁盘上没有副本。它们在磁盘映射表中的表项包含一个非法的磁盘地址或者一个表示它们未被使用的标记位。</p>
+<blockquote>
+<p>而更好的方法是，由于程序正文通常是只读的，当内存资源紧张、程序页不得不移出内存时，尽管丢弃它们，在需要的时候再从可执行文件读入即可。共享库也可以用这个方式工作。</p>
+</blockquote>
+<h3 id="策略和机制的分离">策略和机制的分离</h3>
+<blockquote>
+<p>控制系统复杂度的一种重要方法就是把策略从机制中分离出来。通过使大多数存储管理器作为用户级进程运行，就可以把该原则应用到存储管理中。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%ad%96%e7%95%a5"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%ad%96%e7%95%a5, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%ad%96%e7%95%a5 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e7%ad%96%e7%95%a5 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/策略"
+        title="用一个外部页面调度程序来处理缺页中断" /></p>
+<p>1)一个底层MMU处理程序。</p>
+<p>2)一个作为内核一部分的缺页中断处理程序。</p>
+<p>3)一个运行在用户空间中的外部页面调度程序。</p>
+<p>所有关于MMU工作的细节都被封装在MMU处理程序中，该程序的代码是与机器相关的，而且操作系统每应用到一个新平台就要被重写一次。缺页中断处理程序是与机器无关的代码，包含大多数分页机制。策略主要由作为用户进程运行的外部页面调度程序所决定。</p>
+<h2 id="分段">分段</h2>
+<h3 id="纯分段的实现">纯分段的实现</h3>
+<blockquote>
+<p>分段和分页的实现本质上是不同的：页面是定长的而段不是。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%af%94%e8%be%83"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%af%94%e8%be%83, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%af%94%e8%be%83 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%af%94%e8%be%83 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/比较"
+        title="分页与分段的比较" /></p>
+<p><strong>一个直观并且通用的方法是在机器上提供多个互相独立的称为段（segment）的地址空间</strong>。每个段由一个从0到最大的线性地址序列构成。各个段的长度可以是0到某个允许的最大值之间的任何一个值。不同的段的长度可以不同，并且通常情况下也都不相同。段的长度在运行期间可以动态改变，比如，堆栈段的长度在数据被压入时会增长，在数据被弹出时又会减小。</p>
+<p><strong>因为每个段都构成了一个独立的地址空间，所以它们可以独立地增长或减小而不会影响到其他的段</strong>。如果一个在某个段中的堆栈需要更多的空间，它就可以立刻得到所需要的空间，因为它的地址空间中没有任何其他东西阻挡它增长。段当然有可能会被装满，但通常情况下段都很大，因此这种情况发生的可能性很小。要在这种分段或二维的存储器中指示一个地址，程序必须提供两部分地址，一个段号和一个段内地址。</p>
+<blockquote>
+<p>需要强调的是，段是一个逻辑实体，程序员知道这一点并把它作为一个逻辑实体来使用。一个段可能包括一个过程、一个数组、一个堆栈、一组数值变量，但一般它不会同时包含多种不同类型的内容。</p>
+</blockquote>
+<p>分段也有助于在几个进程之间共享过程和数据。这方面一个常见的例子就是共享库（shared library）。运行高级窗口系统的现代工作站经常要把非常大的图形库编译进几乎所有的程序中。在分段系统中，可以把图形库放到一个单独的段中由各个进程共享，从而不再需要在每个进程的地址空间中都保存一份。虽然在纯的分页系统中也可以有共享库，但是它要复杂得多，并且这些系统实际上是通过模拟分段来实现的。</p>
+<p>因为每个段是一个为程序员所知道的逻辑实体，<strong>比如一个过程、一个数组或一个堆栈，故不同的段可以有不同种类的保护。一个过程段可以被指明为只允许执行，从而禁止对它的读出和写入；一个浮点数组可以被指明为允许读写但不允许执行，任何试图向这个段内的跳转都将被截获。这样的保护有助于找到编程错误。</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/分段"
+        title="a)～d)棋盘形碎片的形成；e)通过紧缩消除棋盘形碎片" /></p>
+<p>在系统运行一段时间后内存被划分为许多块，一些块包含着段，一些则成了空闲区，这种现象称为棋盘形碎片或外部碎片（external fragmentation）。空闲区的存在使内存被浪费了，而这可以通过内存紧缩来解决。</p>
+<h3 id="分段和分页结合multics">分段和分页结合：MULTICS</h3>
+<blockquote>
+<p>如果一个段比较大，把它整个保存在内存中可能很不方便甚至是不可能的，因此产生了对它进行分页的想法。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%92%8c%e9%a1%b5"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%92%8c%e9%a1%b5, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%92%8c%e9%a1%b5 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%92%8c%e9%a1%b5 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/段和页"
+        title="MULTICS的虚拟内存" /></p>
+<p><strong>每个MULTICS程序都有一个段表，每个段对应一个描述符</strong>。因为段表可能会有大于25万个的表项，段表本身也是一个段并被分页。一个段描述符包含了一个段是否在内存中的标志，只要一个段的任何一部分在内存中这个段就被认为是在内存中，并且它的页表也会在内存中。如果一个段在内存中，它的描述符将包含一个18位的指向它的页表的指针。因为物理地址是24位并且页面是按照64字节的边界对齐的（这隐含着页面地址的低6位是000000），所以在描述符中只需要18位来存储页表地址。段描述符中还包含了段大小、保护位以及其他的一些条目。段在辅助存储器中的地址不在段描述符中，而是在缺段处理程序使用的另一个表中。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%9c%b0%e5%9d%80"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%9c%b0%e5%9d%80, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%9c%b0%e5%9d%80 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e5%9c%b0%e5%9d%80 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/段地址"
+        title="一个34位的MULTICS虚拟地址" /></p>
+<blockquote>
+<p>MULTICS中一个地址由两部分构成：段和段内地址。段内地址又进一步分为页号和页内的字，在进行内存访问时，执行下面的算法。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5%e5%af%bb%e5%9d%80"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5%e5%af%bb%e5%9d%80, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5%e5%af%bb%e5%9d%80 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e5%88%86%e6%ae%b5%e5%af%bb%e5%9d%80 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/分段寻址"
+        title="两部分组成的MULTICS地址到内存地址的转换" /></p>
+<p>1)根据段号找到段描述符。</p>
+<p>2)检查该段的页表是否在内存中。如果在，则找到它的位置；如果不在，则产生一个段错误。如果访问违反了段的保护要求就发出一个越界错误（陷阱）。</p>
+<p>3)检查所请求虚拟页面的页表项，如果该页面不在内存中则产生一个缺页中断，如果在内存就从页表项中取出这个页面在内存中的起始地址。</p>
+<p>4)把偏移量加到页面的起始地址上，得到要访问的字在内存中的地址。</p>
+<p>5)最后进行读或写操作。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e4%b8%ad%e7%9a%84TLB"
+        data-srcset="/images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e4%b8%ad%e7%9a%84TLB, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e4%b8%ad%e7%9a%84TLB 1.5x, /images/thinking/%e5%ad%98%e5%82%a8%e7%ae%a1%e7%90%86/%e6%ae%b5%e4%b8%ad%e7%9a%84TLB 2x"
+        data-sizes="auto"
+        alt="/images/thinking/存储管理/段中的TLB"
+        title="一个简化的MULTICS的TLB" /></p>
+<p>TLB中保存着16个最近访问的页的地址，工作集小于TLB容量的程序将随着整个工作集的地址被装入TLB中而逐渐达到稳定，开始高效地运行。如果页面不在TLB中，才会访问描述符和页表以找出页框号，并更新TLB使它包含这个页面，最近最少使用的页面被淘汰出TLB。生存时间位跟踪哪个表项是最近最少使用的。之所以使用TLB是为了并行地比较所有表项的段号和页号。</p>
+<h2 id="小结">小结</h2>
+<p>我们看到在最简单的系统中是根本没有任何交换或分页的。一旦一个程序装入内存，它将一直在内存中运行直到完成。一些操作系统在同一时刻只允许一个进程在内存中运行，而另一些操作系统支持多道程序设计。</p>
+<p>接下来是交换技术。系统通过交换技术可以同时运行总内存占用超过物理内存大小的多个进程，如果一个进程没有内存空间可用，它将会被换到磁盘上。内存和磁盘上的空闲空间可以使用位图或空闲区列表来记录。</p>
+<p>现代计算机都有某种形式的虚拟内存。在最简单的形式中，每一个进程的地址空间被划分为同等大小的块，称为页面，页面可以被放入内存中任何可用的页框内。有多种页面置换算法，其中两个比较好的算法是老化算法和工作集时钟算法。</p>
+<p>为了使分页系统工作良好，仅选择算法是不够的，还要关注诸如工作集的确定、存储器分配策略以及所需要的页面大小等问题。</p>
+<p>分段可以帮助处理在执行过程中大小有变化的数据结构，并能简化连接和共享。分段还有利于为不同的段提供不同的保护。有时，可以把分段和分页结合起来，以提供一种二维的虚拟内存。MULTICS系统以及Intel Pentium都是这样既支持分段也支持分页的系统。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-04-04</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" data-title="存储管理~分页和分段篇" data-hashtags="操作系统"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" data-hashtag="操作系统"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" data-title="存储管理~分页和分段篇"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" data-title="存储管理~分页和分段篇"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Instapaper" data-sharer="instapaper" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" data-title="存储管理~分页和分段篇" data-description="ココの分页和分段"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/instapaper.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="/posts/thinking/%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5/" data-title="存储管理~分页和分段篇"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/thinking/%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98/" class="prev" rel="prev" title="存储管理~分页系统设计篇"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>存储管理~分页系统设计篇</a>
+            <a href="/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="next" rel="next" title="储存管理～页面置换算法篇">储存管理～页面置换算法篇<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">良い夢 - coding....</div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="15816034825" target="_blank">ココ也叫CoCo</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/typeit@8.6.0/dist/index.umd.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"data":{"id-1":"ココのブログ - coding","id-2":"ココのブログ - coding"},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"},"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"id-1":["id-1"],"id-2":["id-2"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
