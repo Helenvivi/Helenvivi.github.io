@@ -4,7 +4,15 @@
         <link>/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
         <description>操作系统 - Tag - ココのブログ</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>1635161916@qq.com (ココ也叫CoCo)</managingEditor>
-            <webMaster>1635161916@qq.com (ココ也叫CoCo)</webMaster><lastBuildDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</lastBuildDate><atom:link href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>1635161916@qq.com (ココ也叫CoCo)</webMaster><lastBuildDate>Mon, 05 Apr 2021 15:58:26 &#43;0800</lastBuildDate><atom:link href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="self" type="application/rss+xml" /><item>
+    <title>文件管理～文件和目录篇</title>
+    <link>/posts/thinking/%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95/</link>
+    <pubDate>Mon, 05 Apr 2021 15:58:26 &#43;0800</pubDate>
+    <author>ココ</author>
+    <guid>/posts/thinking/%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95/</guid>
+    <description><![CDATA[文件 文件命名 文件是一种抽象机制，它提供了一种在磁盘上保留信息而且方便以后读取的方法。抽象机制的最重要的特性就是对管理对象的命名方式 文件扩展名]]></description>
+</item>
+<item>
     <title>储存管理～页面置换算法篇</title>
     <link>/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/</link>
     <pubDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</pubDate>
@@ -75,14 +83,6 @@
     <author>ココ</author>
     <guid>/posts/thinking/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E7%AF%87/</guid>
     <description><![CDATA[进程与线程～进程篇 进程 进程模型 一个进程就是一个正在执行程序的实例，包括程序计数器、寄存器和变量的当前值。从概念上说，每个进程拥有它自己的虚拟]]></description>
-</item>
-<item>
-    <title>操作系统结构</title>
-    <link>/posts/thinking/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/</link>
-    <pubDate>Wed, 17 Mar 2021 15:58:26 &#43;0800</pubDate>
-    <author>ココ</author>
-    <guid>/posts/thinking/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/</guid>
-    <description><![CDATA[操作系统结构 这六种设计是，单体系统、层次系统、微内核、客户机-服务器系统、虚拟机和exokernels等 单体系统 需要一个主程序，用来处理服务]]></description>
 </item>
 </channel>
 </rss>

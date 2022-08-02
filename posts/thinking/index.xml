@@ -21,6 +21,14 @@
     <description><![CDATA[Wireshark的使用与常见错误 wireshark的主要作用是为了诊断网络出现的问题，大致上比较重要的部分是过滤器与结果的表达，这两点是比]]></description>
 </item>
 <item>
+    <title>文件管理～文件和目录篇</title>
+    <link>/posts/thinking/%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95/</link>
+    <pubDate>Mon, 05 Apr 2021 15:58:26 &#43;0800</pubDate>
+    <author>ココ</author>
+    <guid>/posts/thinking/%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95/</guid>
+    <description><![CDATA[文件 文件命名 文件是一种抽象机制，它提供了一种在磁盘上保留信息而且方便以后读取的方法。抽象机制的最重要的特性就是对管理对象的命名方式 文件扩展名]]></description>
+</item>
+<item>
     <title>储存管理～页面置换算法篇</title>
     <link>/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/</link>
     <pubDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</pubDate>
@@ -75,14 +83,6 @@
     <author>ココ</author>
     <guid>/posts/thinking/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</guid>
     <description><![CDATA[进程间通信 简要地说，有三个问题。 第一个问题与上面的叙述有关，即一个进程如何把信息传递给另一个。 第二个要处理的问题是，确保两个或更多的进程在关]]></description>
-</item>
-<item>
-    <title>进程与线程～线程篇</title>
-    <link>/posts/thinking/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%BA%BF%E7%A8%8B%E7%AF%87/</link>
-    <pubDate>Sun, 21 Mar 2021 15:58:26 &#43;0800</pubDate>
-    <author>ココ</author>
-    <guid>/posts/thinking/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%BA%BF%E7%A8%8B%E7%AF%87/</guid>
-    <description><![CDATA[进程与线程～线程篇 线程的使用 必要性 并行实体共享同一个地址空间和所有可用数据的能力。对于某些应用而言，这种能力是必需的，而这正是多进程模型（它]]></description>
 </item>
 </channel>
 </rss>
