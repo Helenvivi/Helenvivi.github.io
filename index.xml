@@ -47,6 +47,14 @@
     <description><![CDATA[文件 文件命名 文件是一种抽象机制，它提供了一种在磁盘上保留信息而且方便以后读取的方法。抽象机制的最重要的特性就是对管理对象的命名方式 文件扩展名]]></description>
 </item>
 <item>
+    <title>文件管理～文件系统的实现</title>
+    <link>/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+    <pubDate>Mon, 05 Apr 2021 15:58:26 &#43;0800</pubDate>
+    <author>ココ</author>
+    <guid>/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+    <description><![CDATA[文件系统的实现 文件系统布局 文件系统存放在磁盘上。多数磁盘划分为一个或多个分区，每个分区中有一个独立的文件系统。 磁盘的0号扇区称为主引导记录（]]></description>
+</item>
+<item>
     <title>储存管理～页面置换算法篇</title>
     <link>/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/</link>
     <pubDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</pubDate>
@@ -77,14 +85,6 @@
     <author>ココ</author>
     <guid>/posts/thinking/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/</guid>
     <description><![CDATA[储存管理篇～虚拟内存技术 虚拟内存 尽管基址寄存器和界限寄存器可以用于创建地址空间的抽象，还有另一个问题需要解决：管理软件的膨胀（bloatwa]]></description>
-</item>
-<item>
-    <title>存储管理~交换技术篇</title>
-    <link>/posts/thinking/%E5%86%85%E5%AD%98%E7%AF%87/</link>
-    <pubDate>Fri, 26 Mar 2021 15:58:26 &#43;0800</pubDate>
-    <author>ココ</author>
-    <guid>/posts/thinking/%E5%86%85%E5%AD%98%E7%AF%87/</guid>
-    <description><![CDATA[存储管理 操作系统中管理分层存储器体系的部分称为存储管理器（memory manager）。它的任务是有效地管理内存，即记录哪些内存是正在使用的]]></description>
 </item>
 </channel>
 </rss>

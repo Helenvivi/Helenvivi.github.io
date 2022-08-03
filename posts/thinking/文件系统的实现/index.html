@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>文件管理～文件系统的实现 - ココのブログ</title><meta name="Description" content="ココの文件系统"><meta property="og:title" content="文件管理～文件系统的实现" />
+<meta property="og:description" content="ココの文件系统" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" /><meta property="og:image" content="/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-05T15:58:26+08:00" />
+<meta property="article:modified_time" content="2021-04-05T15:58:26+08:00" /><meta property="og:site_name" content="ココのブログ" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/logo.png"/>
+
+<meta name="twitter:title" content="文件管理～文件系统的实现"/>
+<meta name="twitter:description" content="ココの文件系统"/>
+<meta name="application-name" content="ココのブログ">
+<meta name="apple-mobile-web-app-title" content="ココのブログ"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" /><link rel="prev" href="/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" /><link rel="next" href="/posts/thinking/%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "文件管理～文件系统的实现",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/posts\/thinking\/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0\/"
+        },"genre": "posts","keywords": "操作系统","wordcount":  5001 ,
+        "url": "\/posts\/thinking\/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0\/","datePublished": "2021-04-05T15:58:26+08:00","dateModified": "2021-04-05T15:58:26+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "ココ"
+            },"description": "ココの文件系统"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ココのブログ"><span id="id-1" class="typeit"></span></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/" title="主页"> Me </a><a class="menu-item" href="/posts/coding/" title="算法"> Coding </a><a class="menu-item" href="/posts/thinking/" title="思考"> Thinking </a><a class="menu-item" href="/tags/" title="标签"> Label </a><a class="menu-item" href="/categories/" title="分类"> Category </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="ねえ、ここに結果が来る" id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ココのブログ"><span id="id-2" class="typeit"></span></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="ねえ、ここに結果が来る" id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/" title="主页">Me</a><a class="menu-item" href="/posts/coding/" title="算法">Coding</a><a class="menu-item" href="/posts/thinking/" title="思考">Thinking</a><a class="menu-item" href="/tags/" title="标签">Label</a><a class="menu-item" href="/categories/" title="分类">Category</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">文件管理～文件系统的实现</h1><h2 class="single-subtitle">文件系统的实现</h2><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="15816034825" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>ココ</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>操作系统</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-04-05">2021-04-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5001 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;10 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#文件系统的实现">文件系统的实现</a>
+      <ul>
+        <li><a href="#文件系统布局">文件系统布局</a></li>
+        <li><a href="#文件的实现">文件的实现</a></li>
+        <li><a href="#目录的实现">目录的实现</a></li>
+        <li><a href="#共享文件">共享文件</a></li>
+        <li><a href="#日志结构文件系统">日志结构文件系统</a></li>
+        <li><a href="#日志文件系统">日志文件系统</a></li>
+        <li><a href="#虚拟文件系统">虚拟文件系统</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="文件系统的实现">文件系统的实现</h2>
+<h3 id="文件系统布局">文件系统布局</h3>
+<blockquote>
+<p>文件系统存放在磁盘上。多数磁盘划分为一个或多个分区，每个分区中有一个独立的文件系统。</p>
+</blockquote>
+<p>磁盘的0号扇区称为<strong>主引导记录（Master Boot Record，MBR）</strong>，用来引导计算机。在<strong>MBR的结尾是分区表</strong>。该表给出了每个分区的起始和结束地址。表中的一个分区被标记为<strong>活动分区</strong>。在计算机被引导时，BIOS读入并执行MBR。</p>
+<p>MBR做的第一件事是确定活动分区，读入它的第一个块，称为<strong>引导块（boot block）</strong>，并执行之。引导块中的程序将装载该分区中的操作系统。为统一起见，每个分区都从一个启动块开始，即使它不含有一个可启动的操作系统。不过，在将来这个分区也许会有一个操作系统的。<strong>除了从引导块开始之外，磁盘分区的布局是随着文件系统的不同而变化的。</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/MBR"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/MBR, /images/thinking/%e6%96%87%e4%bb%b6/MBR 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/MBR 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/MBR"
+        title="一个可能的文件系统布局" /></p>
+<p>接着是文件系统中空闲块的信息，例如，可以用<strong>位图或指针</strong>列表的形式给出。后面也许跟随的是一组i节点，这是一个数据结构数组，每个文件一个，i节点说明了文件的方方面面。接着可能是根目录，它存放文件系统目录树的根部。最后，磁盘的其他部分存放了其他所有的目录和文件。</p>
+<h3 id="文件的实现">文件的实现</h3>
+<blockquote>
+<p>文件存储的实现的关键问题是记录各个文件分别用到哪些磁盘块。</p>
+</blockquote>
+<h4 id="连续分配">连续分配</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/%e6%96%87%e4%bb%b6%e7%9a%84%e5%ae%9e%e7%8e%b0"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/%e6%96%87%e4%bb%b6%e7%9a%84%e5%ae%9e%e7%8e%b0, /images/thinking/%e6%96%87%e4%bb%b6/%e6%96%87%e4%bb%b6%e7%9a%84%e5%ae%9e%e7%8e%b0 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/%e6%96%87%e4%bb%b6%e7%9a%84%e5%ae%9e%e7%8e%b0 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/文件的实现"
+        title="/images/thinking/文件/文件的实现" /></p>
+<blockquote>
+<p>最简单的分配方案是把每个文件作为一连串连续数据块存储在磁盘上。所以，在块大小为1KB的磁盘上，50KB的文件要分配50个连续的块。对于块大小为2KB的磁盘，将分配25个连续的块。</p>
+</blockquote>
+<p>连续磁盘空间分配方案有两大优势。首先，<strong>实现简单</strong>，记录每个文件用到的磁盘块简化为只需记住两个数字即可：第一块的磁盘地址和文件的块数。给定了第一块的编号，一个简单的加法就可以找到任何其他块的编号。</p>
+<p>其次，<strong>读操作性能较好</strong>，因为在单个操作中就可以从磁盘上读出整个文件。只需要一次寻找（对第一个块）。之后不再需要寻道和旋转延迟，所以，数据以磁盘全带宽的速率输入。可见连续分配实现简单且具有高的性能。</p>
+<blockquote>
+<p>但是，连续分配方案也同样有相当明显的不足之处：随着时间的推移，磁盘会变得零碎。</p>
+</blockquote>
+<p>开始时，碎片并不是问题，因为每个新的文件都在先前文件的磁盘结尾写入。但是，磁盘最终会被充满，所以要么压缩磁盘，要么重新使用空洞中的空闲空间。前者由于代价太高而不可行；后者需要维护一个空洞列表，这是可行的。但是，当创建一个新的文件时，为了挑选合适大小的空洞存入文件，就有必要知道该文件的最终大小。</p>
+<h4 id="链表分配">链表分配</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/%e9%93%be%e8%a1%a8%e5%88%86%e9%85%8d"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/%e9%93%be%e8%a1%a8%e5%88%86%e9%85%8d, /images/thinking/%e6%96%87%e4%bb%b6/%e9%93%be%e8%a1%a8%e5%88%86%e9%85%8d 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/%e9%93%be%e8%a1%a8%e5%88%86%e9%85%8d 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/链表分配"
+        title="以磁盘块的链表形式存储文件" /></p>
+<p>与连续分配方案不同，这一方法可以充分**利用每个磁盘块。不会因为磁盘碎片（除了最后一块中的内部碎片）**而浪费存储空间。同样，在目录项中，只需要存放第一块的磁盘地址，文件的其他块就可以从这个首块地址查找到。</p>
+<p>另一方面，在链表分配方案中，<strong>尽管顺序读文件非常方便，但是随机存取却相当缓慢</strong>。要获得块n，操作系统每一次都必须从头开始，并且要先读前面的n-1块。显然，进行如此多的读操作太慢了。</p>
+<p>而且，由于指针占去了一些字节，每个磁盘块存储数据的字节数不再是2的整数次幂。虽然这个问题并不是非常严重，但是怪异的大小确实降低了系统的运行效率，<strong>因为许多程序都是以长度为2的整数次幂来读写磁盘块的</strong>。<strong>由于每个块的前几个字节被指向下一个块的指针所占据，所以要读出完整的一个块，就需要从两个磁盘块中获得和拼接信息，这就因复制引发了额外的开销。</strong></p>
+<h4 id="在内存中采用表的链表分配">在内存中采用表的链表分配</h4>
+<blockquote>
+<p>如果取出每个磁盘块的指针字，把它放在内存的一个表中，就可以解决上述链表的两个不足。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/%e5%86%85%e5%ad%98%e9%93%be%e8%a1%a8"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/%e5%86%85%e5%ad%98%e9%93%be%e8%a1%a8, /images/thinking/%e6%96%87%e4%bb%b6/%e5%86%85%e5%ad%98%e9%93%be%e8%a1%a8 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/%e5%86%85%e5%ad%98%e9%93%be%e8%a1%a8 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/内存链表"
+        title="在内存中使用文件分配表的链表分配" /></p>
+<p>按这类方式组织，整个块都可以存放数据。进而，随机存取也容易得多。虽然仍要顺着链在文件中查找给定的偏移量，但是整个链表都存放在内存中，所以不需要任何磁盘引用。</p>
+<p>这种方法的主要缺点是必须把整个表都存放在内存中。对于200 GB的磁盘和1KB大小的块，这张表需要有2亿项，每一项对应于这2亿个磁盘块中的一个块。每项至少3个字节，为了提高查找速度，有时需要4个字节。根据系统对空间或时间的优化方案，这张表要占用600MB或800MB内存，不太实用。很显然FAT方案对于大磁盘而言不太合适。</p>
+<h4 id="i节点">i节点</h4>
+<blockquote>
+<p>最后一个记录各个文件分别包含哪些磁盘块的方法是给<strong>每个文件赋予一个称为i节点</strong>（index-node）的数据结构，<strong>其中列出了文件属性和文件块的磁盘地址</strong>。</p>
+</blockquote>
+<p>这个数组通常比上一节中叙述的文件分配表（FAT）所占据的空间要小。其原因很简单，保留所有磁盘块的链接表的表大小正比于磁盘自身的大小。如果磁盘有n块，该表需要n个表项。由于磁盘变得更大，该表格也线性随之增加。相反，i节点机制需要在内存中有一个数组，<strong>其大小正比于可能要同时打开的最大文件个数</strong>。它与磁盘是10GB、100GB还是1000GB无关。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/i%e8%8a%82%e7%82%b9"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/i%e8%8a%82%e7%82%b9, /images/thinking/%e6%96%87%e4%bb%b6/i%e8%8a%82%e7%82%b9 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/i%e8%8a%82%e7%82%b9 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/i节点"
+        title="i节点的例子" /></p>
+<h3 id="目录的实现">目录的实现</h3>
+<p>在读文件前，必须先打开文件。打开文件时，操作系统利用用户给出的路径名找到相应目录项。目录项中提供了查找文件磁盘块所需要的信息。因系统而异，这些信息有可能是整个文件的磁盘地址（对于连续分配方案）、第一个块的编号（对于两种链表分配方案）或者是i节点号。无论怎样，目录系统的主要功能是把ASCII文件名映射成定位文件数据所需的信息。</p>
+<blockquote>
+<p>与此密切相关的问题是在何处存放文件属性。</p>
+</blockquote>
+<p>每个文件系统维护诸如文件所有者以及创建时间等文件属性，它们必须存储在某个地方。一种显而易见的方法是把文件属性直接存放在目录项中。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/%e7%9b%ae%e5%bd%95"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/%e7%9b%ae%e5%bd%95, /images/thinking/%e6%96%87%e4%bb%b6/%e7%9b%ae%e5%bd%95 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/%e7%9b%ae%e5%bd%95 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/目录"
+        title="简单目录" /></p>
+<blockquote>
+<p>a)简单目录，包含固定大小的目录项，在目录项中有磁盘地址和属性；b)每个目录项只引用i节点的目录</p>
+</blockquote>
+<p>对于采用i节点的系统，还存在另一种方法，即把文件属性存放在i节点中而不是目录项中。在这种情形下，目录项会更短：只有文件名和i节点号。</p>
+<h3 id="共享文件">共享文件</h3>
+<blockquote>
+<p>当几个用户同在一个项目里工作时，他们常常需要共享文件。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6, /images/thinking/%e6%96%87%e4%bb%b6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/%e5%85%b1%e4%ba%ab%e6%96%87%e4%bb%b6 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/共享文件"
+        title="有共享文件的文件系统" /></p>
+<p>共享文件是方便的，但也带来一些问题。如果目录中包含磁盘地址，则当连接文件时，必须把C目录中的磁盘地址复制到B目录中。<strong>如果B或C随后又往该文件中添加内容，则新的数据块将只列入进行添加工作的用户的目录中。其他的用户对此改变是不知道的。所以违背了共享的目的</strong>。</p>
+<p>有两种方法可以解决这一问题。在第一种解决方案中，磁盘块不列入目录，而是列入一个与文件本身关联的小型数据结构中。目录将指向这个小型数据结构。这是UNIX系统中所采用的方法**（小型数据结构即是i节点）**。</p>
+<p>在第二种解决方案中，通过让系统建立一个类型为<strong>LINK的新文件</strong>，并把该文件放在B的目录下，<strong>使得B与C的一个文件存在连接</strong>。<strong>新的文件中只包含了它所连接的文件的路径名</strong>。当B读该连接文件时，操作系统查看到要读的文件是LINK类型，则找到该文件所连接的文件的名字，并且去读那个文件。与传统（硬）连接相对比起来，这一方法称为<strong>符号连接（symbolic linking）</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/thinking/%e6%96%87%e4%bb%b6/%e8%bf%9e%e6%8e%a5"
+        data-srcset="/images/thinking/%e6%96%87%e4%bb%b6/%e8%bf%9e%e6%8e%a5, /images/thinking/%e6%96%87%e4%bb%b6/%e8%bf%9e%e6%8e%a5 1.5x, /images/thinking/%e6%96%87%e4%bb%b6/%e8%bf%9e%e6%8e%a5 2x"
+        data-sizes="auto"
+        alt="/images/thinking/文件/连接"
+        title="有共享文件的文件系统" /></p>
+<blockquote>
+<p>a)连接之前的状况；b)创建连接之后；c)当所有者删除文件后（所有者无法被改变）</p>
+</blockquote>
+<p>第一种方法中，当B连接到共享文件时，i节点记录文件的所有者是C。建立一个连接并不改变所有关系（见图4-17），但它将i节点的连接计数加1，所以系统知道目前有多少目录项指向这个文件。如果以后C试图删除这个文件，系统将面临问题。</p>
+<p>如果系统删除文件并清除i节点，B则有一个目录项指向一个无效的i节点。如果该i节点以后分配给另一个文件，则B的连接指向一个错误的文件。系统通过i节点中的计数可知该文件仍然被引用，但是没有办法找到指向该文件的全部目录项以删除它们。指向目录的指针不能存储在i节点中，原因是有可能有无数个目录。</p>
+<blockquote>
+<p>对于符号连接，以上问题不会发生，因为只有真正的文件所有者才有一个指向i节点的指针。</p>
+</blockquote>
+<p>连接到该文件上的用户只有路径名，没有指向i节点的指针。当文件所有者删除文件时，该文件被销毁。以后若试图通过符号连接访问该文件将导致失败，因为系统不能找到该文件。删除符号连接根本不影响该文件。</p>
+<p>符号连接的问题是需要<strong>额外的开销</strong>。必须读取包含路径的文件，然后要一个部分一个部分地扫描路径，直到找到i节点。这些操作也许需要很多次额外的磁盘存取。</p>
+<p>此外，每个符号连接都需要额外的i节点，以及额外的一个磁盘块用于存储路径，虽然如果路径名很短，作为一种优化，系统可以将它存储在i节点中。符号连接有一个优势，即只要简单地提供一个机器的网络地址以及文件在该机器上驻留的路径，就可以连接全球任何地方的机器上的文件。</p>
+<h3 id="日志结构文件系统">日志结构文件系统</h3>
+<blockquote>
+<p><strong>日志结构文件系统（Log-structured File System，LFS）</strong>，试图缓解同时内存容量也以指数形式增长。而没有得到快速发展的参数是磁盘的寻道时间问题。</p>
+</blockquote>
+<p><strong>促使设计LFS的主要原因是，CPU的运行速度越来越快，RAM内存容量变得更大，同时磁盘高速缓存也迅速地增加。更为糟糕的情况是，在大多数文件系统中，写操作往往都是零碎的。</strong></p>
+<p>为了看看这样小的零碎写操作从何而来，考虑在UNIX文件系统上创建一个新文件。为了写这个文件，必须写该文件目录的i节点、目录块、文件的i节点以及文件本身。而这些写操作都有可能被延迟，那么如果在写操作完成之前发生死机，就可能在文件系统中造成严重的不一致性。<strong>正因为如此，i节点的写操作一般是立即完成的。</strong></p>
+<blockquote>
+<p>出于这一原因，LFS的设计者决定重新实现一种UNIX文件系统，该系统即使对于一个大部分由零碎的随机写操作组成的任务，同样能够<strong>充分利用磁盘的带宽</strong>。</p>
+</blockquote>
+<p>其基本思想是将整个磁盘结构化为一个日志。<strong>每隔一段时间，或是有特殊需要时，被缓冲在内存中的所有未决的写操作都被放到一个单独的段中</strong>，作为在<strong>日志末尾的一个邻接段写入磁盘</strong>。一个单独的段可能会包括i节点、目录块、数据块或者都有。每一个段的开始都是该段的摘要，说明该段中都包含哪些内容。<strong>如果所有的段平均在1MB左右，那么就几乎可以利用磁盘的完整带宽</strong>。</p>
+<p>在LFS的设计中，同样存在着i节点，且具有与UNIX中一样的结构，<strong>但是i节点分散在整个日志中</strong>，而不是放在磁盘的某一个固定位置。尽管如此，当一个i节点被定位后，定位一个块就用通常的方式来完成。由于这种设计，<strong>要在磁盘中找到一个i节点就变得比较困难了，因为i节点的地址不能像在UNIX中那样简单地通过计算得到</strong>。为了能够找到i节点，必须要维护一个由i节点编号索引组成的i节点图。在这个图中的表项i指向磁盘中的第i个i节点。这个图保存在磁盘上，但是也保存在高速缓存中，因此，大多数情况下这个图的最常用部分还是在内存中。</p>
+<h3 id="日志文件系统">日志文件系统</h3>
+<blockquote>
+<p><strong>这里的基本想法是保存一个用于记录系统下一步将要做什么的日志</strong>。考虑一个简单、普通并经常发生的操作：移除文件。这个操作（在UNIX中）需要三个步骤完成：</p>
+</blockquote>
+<ul>
+<li>在目录中删除文件；.</li>
+<li>释放i节点到空闲i节点池；</li>
+<li>将所有磁盘块归还空闲磁盘块池;</li>
+</ul>
+<blockquote>
+<p>**日志文件系统则先写一个日志项，列出三个将要完成的动作。**然后日志项被写入磁盘（并且为了良好地实施，可能从磁盘读回来验证它的完整性）。</p>
+</blockquote>
+<p>**只有当日志项已经被写入，不同的操作才可以进行。**当所有的操作成功完成后，擦除日志项。如果系统这时崩溃，系统恢复后，文件系统可以通过检查日志来查看是不是有未完成的操作。如果有，可以重新运行所有未完成的操作（这个过程在系统崩溃重复发生时执行多次），直到文件被正确地删除。</p>
+<p>为了增加可信性，一个文件系统可以引入数据库中<strong>原子事务（atomic transaction）的概念</strong>。使用这个概念，一组动作可以被界定在开始事务和结束事务操作之间。这样，文件系统就会知道<strong>它必须完成所有被界定的操作，或者什么也不做，但是没有其他的选择。</strong></p>
+<h3 id="虚拟文件系统">虚拟文件系统</h3>
+<p>所有和文件相关的系统调用在最初的处理上都指向虚拟文件系统。这些来自用户进程的调用，都是标准的POSIX系统调用，比如open、read write和lseek等。因此，虚拟文件系统对用户进程有一个“更高层”接口，它就是著名的POSIX接口。</p>
+<p>尽管VFS下大多数的文件系统体现了本地磁盘的划分，但并不总是这样。事实上，Sun建立虚拟文件系统最原始的动机是支持使用NFS（Network File System，网络文件系统）协议的远程文件系统。VFS设计是只要实际的文件系统提供VFS需要的功能，VFS就不需知道或者关心数据具体存储在什么地方或者底层的文件系统是什么样的。</p>
+<p>大多数VFS应用本质上都是面向对象的，即便它们用C语言而不是C++编写。有几种通常支持的主要的对象类型，包括超块（描述文件系统）、v节点（描述文件）和目录（描述文件系统目录）。这些中的每一个都有实际文件系统必须支持的相关操作。另外，VFS有一些供它自己使用的内部数据结构，包括用于跟踪用户进程中所有打开文件的装载表和文件描述符的数组。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-04-05</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-title="文件管理～文件系统的实现" data-hashtags="操作系统"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-hashtag="操作系统"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-title="文件管理～文件系统的实现"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-title="文件管理～文件系统的实现"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Instapaper" data-sharer="instapaper" data-url="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-title="文件管理～文件系统的实现" data-description="ココの文件系统"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/instapaper.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" data-title="文件管理～文件系统的实现"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/" class="prev" rel="prev" title="储存管理～页面置换算法篇"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>储存管理～页面置换算法篇</a>
+            <a href="/posts/thinking/%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95/" class="next" rel="next" title="文件管理～文件和目录篇">文件管理～文件和目录篇<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">良い夢 - coding....</div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="15816034825" target="_blank">ココ也叫CoCo</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/typeit@8.6.0/dist/index.umd.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"data":{"id-1":"ココのブログ - coding","id-2":"ココのブログ - coding"},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"},"typeit":{"cursorChar":"|","cursorSpeed":1000,"data":{"id-1":["id-1"],"id-2":["id-2"]},"duration":-1,"speed":100}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

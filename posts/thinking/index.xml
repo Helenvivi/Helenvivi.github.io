@@ -29,6 +29,14 @@
     <description><![CDATA[文件 文件命名 文件是一种抽象机制，它提供了一种在磁盘上保留信息而且方便以后读取的方法。抽象机制的最重要的特性就是对管理对象的命名方式 文件扩展名]]></description>
 </item>
 <item>
+    <title>文件管理～文件系统的实现</title>
+    <link>/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+    <pubDate>Mon, 05 Apr 2021 15:58:26 &#43;0800</pubDate>
+    <author>ココ</author>
+    <guid>/posts/thinking/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+    <description><![CDATA[文件系统的实现 文件系统布局 文件系统存放在磁盘上。多数磁盘划分为一个或多个分区，每个分区中有一个独立的文件系统。 磁盘的0号扇区称为主引导记录（]]></description>
+</item>
+<item>
     <title>储存管理～页面置换算法篇</title>
     <link>/posts/thinking/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95/</link>
     <pubDate>Sun, 04 Apr 2021 15:58:26 &#43;0800</pubDate>
@@ -75,14 +83,6 @@
     <author>ココ</author>
     <guid>/posts/thinking/%E8%B0%83%E5%BA%A6/</guid>
     <description><![CDATA[调度 当计算机系统是多道程序设计系统时，通常就会有多个进程或线程同时竞争CPU。只要有两个或更多的进程处于就绪状态，这种情形就会发生。如果只有]]></description>
-</item>
-<item>
-    <title>进程与线程~进程间通信</title>
-    <link>/posts/thinking/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</link>
-    <pubDate>Mon, 22 Mar 2021 15:58:26 &#43;0800</pubDate>
-    <author>ココ</author>
-    <guid>/posts/thinking/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</guid>
-    <description><![CDATA[进程间通信 简要地说，有三个问题。 第一个问题与上面的叙述有关，即一个进程如何把信息传递给另一个。 第二个要处理的问题是，确保两个或更多的进程在关]]></description>
 </item>
 </channel>
 </rss>
